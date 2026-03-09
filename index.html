@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Casino - Hondubet</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Primary Colors - Hondubet Design System */
+            --primary: #151c30;
+            --secondary: #0d1220;
+            
+            /* Accent Colors */
+            --accent: #28CDDF;
+            --accent-light: #34C6E9;
+            --accent-dark: #003746;
+            --accent-gradient: linear-gradient(135deg, #28CDDF 0%, #003746 100%);
+            --brand-gradient: linear-gradient(135deg, #8a2be2 0%, #28CDDF 100%);
+            
+            /* Semantic Colors */
+            --success: #00ff88;
+            --warning: #ffab00;
+            --error: #ff1744;
+            
+            /* Text */
+            --text: #ffffff;
+            --text-muted: #a0a4b8;
+            --text-gray: #71717a;
+            
+            /* Cards & Surfaces */
+            --card-bg: #1e2740;
+            --surface: #1a2338;
+            --border: #2a3650;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--primary);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        /* Header - Hondubet Style */
+        .header {
+            background: var(--secondary);
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-family: 'Poppins', sans-serif;
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--text);
+            letter-spacing: -0.5px;
+        }
+
+        .logo span {
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .user-section {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .balance-card {
+            background: var(--surface);
+            padding: 8px 14px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .balance-amount {
+            font-weight: 700;
+            color: var(--success);
+            font-size: 14px;
+        }
+
+        .avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--brand-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        /* Navigation - Bottom Nav Mobile Style */
+        .nav-tabs {
+            display: flex;
+            gap: 4px;
+            padding: 12px 16px;
+            overflow-x: auto;
+            background: var(--secondary);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav-tab {
+            padding: 10px 16px;
+            border-radius: 20px;
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+
+        .nav-tab.active {
+            background: var(--accent-gradient);
+            color: white;
+        }
+
+        .nav-tab:not(.active):hover {
+            background: var(--surface);
+            color: var(--text);
+        }
+
+        /* Hero Banner */
+        .hero-banner {
+            position: relative;
+            height: 40vh;
+            min-height: 280px;
+            max-height: 350px;
+            overflow: hidden;
+            background: linear-gradient(135deg, rgba(21, 28, 48, 0.9) 0%, rgba(13, 18, 32, 0.95) 100%),
+                        url('https://secrzaapg5nnoosz.public.blob.vercel-storage.com/hondubet/cms/carousel/torneo-casino-caribeo-1772643929916.webp') center/cover no-repeat;
+        }
+
+        .hero-banner::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at 50% 50%, rgba(138, 43, 226, 0.15) 0%, transparent 70%);
+        }
+
+        .hero-content {
+            position: relative;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 24px;
+            max-width: 600px;
+        }
+
+        .hero-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(40, 205, 223, 0.15);
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            width: fit-content;
+            margin-bottom: 12px;
+        }
+
+        .hero-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 28px;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 8px;
+        }
+
+        .hero-title span {
+            background: var(--brand-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-subtitle {
+            color: var(--text-muted);
+            font-size: 14px;
+            margin-bottom: 16px;
+        }
+
+        .hero-btn {
+            background: var(--accent-gradient);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 24px;
+            color: white;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            width: fit-content;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .hero-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(40, 205, 223, 0.3);
+        }
+
+        /* Tournament Badge */
+        .tournament-badge {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            padding: 8px 14px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tournament-badge span:first-child {
+            font-size: 20px;
+        }
+
+        .tournament-prize {
+            font-weight: 700;
+            font-size: 14px;
+            color: var(--success);
+        }
+
+        /* Providers Bar */
+        .providers-section {
+            padding: 16px;
+            background: var(--secondary);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .providers-scroll {
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            padding-bottom: 4px;
+        }
+
+        .provider-logo {
+            min-width: 70px;
+            height: 32px;
+            background: var(--surface);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            color: var(--text-muted);
+            cursor: pointer;
+            border: 1px solid transparent;
+            transition: all 0.2s;
+            filter: brightness(0) invert(1);
+            opacity: 0.7;
+        }
+
+        .provider-logo:hover, .provider-logo.active {
+            border-color: var(--accent);
+            opacity: 1;
+        }
+
+        /* Filters */
+        .filters {
+            padding: 16px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .filter-chip {
+            padding: 8px 16px;
+            border-radius: 20px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .filter-chip:hover, .filter-chip.active {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: rgba(40, 205, 223, 0.1);
+        }
+
+        /* Search */
+        .search-bar {
+            padding: 0 16px 16px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 12px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            color: var(--text);
+            font-size: 14px;
+            font-family: inherit;
+        }
+
+        .search-input::placeholder { color: var(--text-gray); }
+        .search-input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        /* Games Grid */
+        .games-section {
+            padding: 0 16px 24px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .section-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 18px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-link {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--accent);
+            cursor: pointer;
+        }
+
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        @media (min-width: 640px) {
+            .games-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .games-grid {
+                grid-template-columns: repeat(5, 1fr);
+            }
+        }
+
+        .game-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: 1px solid var(--border);
+        }
+
+        .game-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(40, 205, 223, 0.15);
+            border-color: var(--accent);
+        }
+
+        .game-thumbnail {
+            width: 100%;
+            aspect-ratio: 1;
+            background: linear-gradient(135deg, var(--surface) 0%, var(--primary) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            font-size: 36px;
+        }
+
+        .game-badge {
+            position: absolute;
+            top: 6px;
+            left: 6px;
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-size: 9px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-hot { 
+            background: linear-gradient(135deg, #ff1744, #ff6b6b); 
+            color: white;
+        }
+        
+        .badge-new { 
+            background: var(--accent-gradient); 
+            color: white;
+        }
+
+        .badge-jackpot { 
+            background: linear-gradient(135deg, #ffab00, #ff1744); 
+            color: white;
+        }
+
+        .game-info {
+            padding: 10px;
+        }
+
+        .game-title {
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .game-provider {
+            font-size: 10px;
+            color: var(--text-gray);
+        }
+
+        /* Mobile Nav */
+        .mobile-nav {
+            display: flex;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(13, 18, 32, 0.95);
+            backdrop-filter: blur(12px);
+            padding: 8px 16px;
+            border-top: 1px solid var(--border);
+            z-index: 100;
+            justify-content: space-around;
+        }
+
+        .mobile-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            color: var(--text-gray);
+            font-size: 10px;
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 12px;
+            transition: all 0.2s;
+        }
+
+        .mobile-nav-item.active { 
+            color: var(--accent); 
+            background: rgba(40, 205, 223, 0.1);
+        }
+
+        .mobile-nav-icon {
+            font-size: 20px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-title { font-size: 22px; }
+            .games-section { padding-bottom: 80px; }
+        }
+
+        /* State Selector (Demo) */
+        .state-selector {
+            position: fixed;
+            right: 12px;
+            top: 80px;
+            background: var(--card-bg);
+            padding: 12px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            z-index: 1000;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+        }
+
+        .state-selector h4 {
+            margin-bottom: 8px;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .state-btn {
+            display: block;
+            width: 100%;
+            padding: 6px 10px;
+            margin-bottom: 4px;
+            border: none;
+            border-radius: 8px;
+            background: var(--surface);
+            color: var(--text);
+            cursor: pointer;
+            text-align: left;
+            font-size: 11px;
+        }
+
+        .state-btn:hover, .state-btn.active {
+            background: var(--accent);
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .state-selector { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <!-- State Selector (Demo) -->
+    <div class="state-selector">
+        <h4>🎛️ Estados</h4>
+        <button class="state-btn active" onclick="setState('logged')">✅ Logueado</button>
+        <button class="state-btn" onclick="setState('guest')">👤 Invitado</button>
+        <button class="state-btn" onclick="setState('no-balance')">💰 Sin saldo</button>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="logo">HONDO<span>BET</span></div>
+        <div class="user-section" id="userSection">
+            <div class="balance-card">
+                <span>💵</span>
+                <span class="balance-amount" id="balanceAmount">L 2,450.00</span>
+            </div>
+            <div class="avatar">JP</div>
+        </div>
+    </header>
+
+    <!-- Hero Banner -->
+    <div class="hero-banner">
+        <div class="tournament-badge">
+            <span>🏆</span>
+            <span class="tournament-prize">L 50,000</span>
+        </div>
+        <div class="hero-content">
+            <div class="hero-tag">
+                <span>🔥</span> Torneo Activo
+            </div>
+            <h1 class="hero-title">CASINO <span>CARIBEÑO</span></h1>
+            <p class="hero-subtitle">Del 1 al 31 de Marzo • Gana tu parte del premio</p>
+            <button class="hero-btn">Participar Ahora</button>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="nav-tabs">
+        <button class="nav-tab active">🎰 Todos</button>
+        <button class="nav-tab">🎱 Tragamonas</button>
+        <button class="nav-tab">🃏 Casino Live</button>
+        <button class="nav-tab">💣 Crash</button>
+        <button class="nav-tab">🎯 Mine</button>
+        <button class="nav-tab">💎 Jackpots</button>
+    </nav>
+
+    <!-- Providers -->
+    <div class="providers-section">
+        <div class="providers-scroll">
+            <div class="provider-logo active">Evolution</div>
+            <div class="provider-logo">Pragmatic</div>
+            <div class="provider-logo">Ezugi</div>
+            <div class="provider-logo">NetEnt</div>
+            <div class="provider-logo">PlayTech</div>
+            <div class="provider-logo">Spribe</div>
+            <div class="provider-logo">Yggdrasil</div>
+            <div class="provider-logo">Habanero</div>
+        </div>
+    </div>
+
+    <!-- Search -->
+    <div class="search-bar">
+        <input type="text" class="search-input" placeholder="🔍 Buscar juegos...">
+    </div>
+
+    <!-- Filters -->
+    <div class="filters">
+        <span class="filter-chip active">Populares</span>
+        <span class="filter-chip">Nuevos</span>
+        <span class="filter-chip">Jackpots</span>
+        <span class="filter-chip">Con Bonus</span>
+    </div>
+
+    <!-- Games Grid -->
+    <section class="games-section">
+        <div class="section-header">
+            <div class="section-title">
+                <span>⭐</span> Recomendados
+            </div>
+            <span class="section-link">Ver más →</span>
+        </div>
+        <div class="games-grid" id="gamesGrid">
+        </div>
+    </section>
+
+    <section class="games-section">
+        <div class="section-header">
+            <div class="section-title">
+                <span>🔥</span> Trending
+            </div>
+            <span class="section-link">Ver más →</span>
+        </div>
+        <div class="games-grid" id="trendingGames">
+        </div>
+    </section>
+
+    <!-- Mobile Nav -->
+    <nav class="mobile-nav">
+        <div class="mobile-nav-item active">
+            <span class="mobile-nav-icon">🎰</span>
+            <span>Casino</span>
+        </div>
+        <div class="mobile-nav-item">
+            <span class="mobile-nav-icon">⚽</span>
+            <span>Deportes</span>
+        </div>
+        <div class="mobile-nav-item">
+            <span class="mobile-nav-icon">🎁</span>
+            <span>Promos</span>
+        </div>
+        <div class="mobile-nav-item">
+            <span class="mobile-nav-icon">👤</span>
+            <span>Perfil</span>
+        </div>
+    </nav>
+
+    <script>
+        // Sample Games Data
+        const games = [
+            { id: 1, title: 'Sweet Bonanza', provider: 'Pragmatic Play', badge: 'hot', emoji: '🍬' },
+            { id: 2, title: 'Gates of Olympus', provider: 'Pragmatic Play', badge: 'hot', emoji: '⚡' },
+            { id: 3, title: 'Lightning Roulette', provider: 'Evolution', badge: 'new', emoji: '⚡' },
+            { id: 4, title: 'Aviator', provider: 'Spribe', badge: 'jackpot', emoji: '✈️' },
+            { id: 5, title: 'Crazy Time', provider: 'Evolution', badge: 'jackpot', emoji: '🎡' },
+            { id: 6, title: 'Blackjack VIP', provider: 'Evolution', badge: null, emoji: '🃏' },
+            { id: 7, title: 'Mine', provider: 'Spribe', badge: 'new', emoji: '💣' },
+            { id: 8, title: 'Starburst', provider: 'NetEnt', badge: null, emoji: '⭐' },
+            { id: 9, title: 'Book of Dead', provider: "Play'n GO", badge: null, emoji: '📖' },
+            { id: 10, title: 'Wolf Gold', provider: 'Pragmatic Play', badge: null, emoji: '🐺' },
+        ];
+
+        function renderGames() {
+            const grid = document.getElementById('gamesGrid');
+            const trending = document.getElementById('trendingGames');
+            
+            const html = games.map(game => `
+                <div class="game-card" onclick="alert('🎮 Iniciando ${game.title}...')">
+                    <div class="game-thumbnail">
+                        <span>${game.emoji}</span>
+                        ${game.badge ? `<span class="game-badge badge-${game.badge}">${game.badge === 'hot' ? 'HOT' : game.badge === 'new' ? 'NUEVO' : 'JACKPOT'}</span>` : ''}
+                    </div>
+                    <div class="game-info">
+                        <div class="game-title">${game.title}</div>
+                        <div class="game-provider">${game.provider}</div>
+                    </div>
+                </div>
+            `).join('');
+
+            grid.innerHTML = html;
+            trending.innerHTML = html;
+        }
+
+        // State Management
+        const states = {
+            logged: {
+                userSection: `
+                    <div class="balance-card">
+                        <span>💵</span>
+                        <span class="balance-amount">L 2,450.00</span>
+                    </div>
+                    <div class="avatar">JP</div>
+                `,
+                showLoginBtn: false
+            },
+            guest: {
+                userSection: `
+                    <button class="hero-btn" style="padding: 8px 16px; font-size: 12px;">Iniciar Sesión</button>
+                `,
+                showLoginBtn: true
+            },
+            'no-balance': {
+                userSection: `
+                    <div class="balance-card" style="border-color: var(--warning);">
+                        <span>💵</span>
+                        <span class="balance-amount" style="color: var(--warning);">L 0.00</span>
+                    </div>
+                    <div class="avatar">JP</div>
+                `,
+                showLoginBtn: false
+            }
+        };
+
+        function setState(state) {
+            const config = states[state];
+            document.getElementById('userSection').innerHTML = config.userSection;
+            
+            document.querySelectorAll('.state-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+        // Filter functionality
+        document.querySelectorAll('.filter-chip').forEach(chip => {
+            chip.addEventListener('click', function() {
+                document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        document.querySelectorAll('.nav-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Initialize
+        renderGames();
+    </script>
+</body>
+</html>
