@@ -529,6 +529,60 @@
 
         @media (max-width: 768px) {
             .state-selector { display: none; }
+            .games-section { padding-bottom: 80px; }
+        }
+        
+        /* Banner Slider */
+        .banner-slider {
+            position: relative;
+            height: 40vh;
+            min-height: 280px;
+            max-height: 350px;
+        }
+        
+        .hero-banner {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            background: linear-gradient(135deg, rgba(21, 28, 48, 0.92) 0%, rgba(13, 18, 32, 0.95) 100%);
+        }
+        
+        .hero-banner.active {
+            opacity: 1;
+        }
+        
+        .hero-banner.slide-2 {
+            background: linear-gradient(135deg, rgba(138, 43, 226, 0.15) 0%, rgba(13, 18, 32, 0.95) 100%),
+                        url('https://secrzaapg5nnoosz.public.blob.vercel-storage.com/hondubet/cms/carousel/bono-primer-depsito-300-1764363677579.webp') center/cover no-repeat;
+        }
+        
+        .hero-banner.slide-3 {
+            background: linear-gradient(135deg, rgba(255, 171, 0, 0.1) 0%, rgba(13, 18, 32, 0.95) 100%),
+                        url('https://secrzaapg5nnoosz.public.blob.vercel-storage.com/hondubet/cms/carousel/jackpot-hondubet-1772818602900.webp') center/cover no-repeat;
+        }
+        
+        .banner-dots {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px;
+            background: var(--secondary);
+        }
+        
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--text-gray);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .dot.active {
+            background: var(--accent);
+            width: 24px;
+            border-radius: 4px;
         }
     </style>
 </head>
@@ -553,20 +607,59 @@
         </div>
     </header>
 
-    <!-- Hero Banner -->
-    <div class="hero-banner">
-        <div class="tournament-badge">
-            <span>🏆</span>
-            <span class="tournament-prize">L 50,000</span>
-        </div>
-        <div class="hero-content">
-            <div class="hero-tag">
-                <span>🔥</span> Torneo Activo
+    <!-- Hero Banner Slider -->
+    <div class="banner-slider" id="bannerSlider">
+        <div class="hero-banner active">
+            <div class="tournament-badge">
+                <span>🏆</span>
+                <span class="tournament-prize">L 50,000</span>
             </div>
-            <h1 class="hero-title">CASINO <span>CARIBEÑO</span></h1>
-            <p class="hero-subtitle">Del 1 al 31 de Marzo • Gana tu parte del premio</p>
-            <button class="hero-btn">Participar Ahora</button>
+            <div class="hero-content">
+                <div class="hero-tag">
+                    <span>🔥</span> Torneo Activo
+                </div>
+                <h1 class="hero-title">CASINO <span>CARIBEÑO</span></h1>
+                <p class="hero-subtitle">Del 1 al 31 de Marzo • Gana tu parte del premio</p>
+                <button class="hero-btn">Participar Ahora</button>
+            </div>
         </div>
+        
+        <div class="hero-banner slide-2">
+            <div class="tournament-badge" style="background: rgba(138, 43, 226, 0.6);">
+                <span>🎰</span>
+                <span class="tournament-prize">50 Giros</span>
+            </div>
+            <div class="hero-content">
+                <div class="hero-tag" style="background: rgba(138, 43, 226, 0.2); border-color: #8a2be2; color: #c084fc;">
+                    <span>⭐</span> Bono Especial
+                </div>
+                <h1 class="hero-title">SLOTS <span>MEGA</span></h1>
+                <p class="hero-subtitle">50 Giros gratis en tus juegos favoritos</p>
+                <button class="hero-btn" style="background: linear-gradient(135deg, #8a2be2 0%, #28CDDF 100%);">Claim Bonus</button>
+            </div>
+        </div>
+        
+        <div class="hero-banner slide-3">
+            <div class="tournament-badge" style="background: rgba(255, 171, 0, 0.6);">
+                <span>👑</span>
+                <span class="tournament-prize">VIP</span>
+            </div>
+            <div class="hero-content">
+                <div class="hero-tag" style="background: rgba(255, 171, 0, 0.2); border-color: #ffab00; color: #ffab00;">
+                    <span>💎</span> Exclusivo
+                </div>
+                <h1 class="hero-title">CLUB <span>VIP</span></h1>
+                <p class="hero-subtitle">Beneficios exclusivos para los mejores jugadores</p>
+                <button class="hero-btn" style="background: linear-gradient(135deg, #ffab00 0%, #ff6b00 100%);">Ver Beneficios</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Banner Dots -->
+    <div class="banner-dots">
+        <span class="dot active" onclick="goToSlide(0)"></span>
+        <span class="dot" onclick="goToSlide(1)"></span>
+        <span class="dot" onclick="goToSlide(2)"></span>
     </div>
 
     <!-- Navigation -->
@@ -740,6 +833,21 @@
 
         // Initialize
         renderGames();
+        
+        // Banner Slider
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.hero-banner');
+        const dots = document.querySelectorAll('.dot');
+        
+        function goToSlide(n) {
+            slides.forEach(s => s.classList.remove('active'));
+            dots.forEach(d => d.classList.remove('active'));
+            currentSlide = (n + slides.length) % slides.length;
+            slides[currentSlide].classList.add('active');
+            dots[currentSlide].classList.add('active');
+        }
+        
+        setInterval(() => goToSlide(currentSlide + 1), 5000);
     </script>
 </body>
 </html>
