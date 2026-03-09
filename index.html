@@ -557,6 +557,19 @@
                         url('https://secrzaapg5nnoosz.public.blob.vercel-storage.com/hondubet/cms/carousel/bono-primer-depsito-300-1764363677579.webp') center/cover no-repeat;
         }
         
+        /* Mundial Slide with Image */
+        .mundial-slide {
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.5) 50%, rgba(0, 0, 0, 0.8) 100%),
+                        url('mundial_2026_banner.png') center/cover no-repeat !important;
+        }
+        
+        @media (min-width: 768px) {
+            .mundial-slide {
+                background: linear-gradient(135deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.3) 100%),
+                            url('mundial_2026_banner.png') center/cover no-repeat !important;
+            }
+        }
+        
         .hero-banner.slide-3 {
             background: linear-gradient(135deg, rgba(255, 171, 0, 0.1) 0%, rgba(13, 18, 32, 0.95) 100%),
                         url('https://secrzaapg5nnoosz.public.blob.vercel-storage.com/hondubet/cms/carousel/jackpot-hondubet-1772818602900.webp') center/cover no-repeat;
@@ -624,6 +637,22 @@
             </div>
         </div>
         
+        <!-- Mundial 2026 Banner -->
+        <div class="hero-banner mundial-slide">
+            <div class="tournament-badge" style="background: rgba(0, 167, 87, 0.8);">
+                <span>🌎</span>
+                <span class="tournament-prize">MUNDIAL</span>
+            </div>
+            <div class="hero-content">
+                <div class="hero-tag" style="background: rgba(0, 167, 87, 0.2); border-color: #00a757; color: #00a757;">
+                    <span>⚽</span> Apuestas
+                </div>
+                <h1 class="hero-title">MUNDIAL <span>2026</span></h1>
+                <p class="hero-subtitle">Apuesta en los partidos con las mejores cuotas</p>
+                <button class="hero-btn" style="background: linear-gradient(135deg, #00a757 0%, #00c853 100%);">Apostar Ahora</button>
+            </div>
+        </div>
+        
         <div class="hero-banner slide-2">
             <div class="tournament-badge" style="background: rgba(138, 43, 226, 0.6);">
                 <span>🎰</span>
@@ -660,6 +689,7 @@
         <span class="dot active" onclick="goToSlide(0)"></span>
         <span class="dot" onclick="goToSlide(1)"></span>
         <span class="dot" onclick="goToSlide(2)"></span>
+        <span class="dot" onclick="goToSlide(3)"></span>
     </div>
 
     <!-- Navigation -->
