@@ -126,17 +126,35 @@
             font-weight: 600;
             font-size: 13px;
             white-space: nowrap;
-            transition: all 0.2s;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-tab::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: var(--accent-gradient);
+            opacity: 0;
+            transition: opacity 0.25s ease;
+            border-radius: 20px;
         }
 
         .nav-tab.active {
             background: var(--accent-gradient);
             color: white;
+            box-shadow: 0 4px 12px rgba(40, 205, 223, 0.3);
         }
 
         .nav-tab:not(.active):hover {
             background: var(--surface);
             color: var(--text);
+            transform: translateY(-1px);
+        }
+
+        .nav-tab:not(.active):hover::before {
+            opacity: 0.1;
         }
 
         /* Hero Banner */
@@ -380,14 +398,21 @@
             border-radius: 12px;
             overflow: hidden;
             cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s ease, border-image 0.3s ease;
             border: 1px solid var(--border);
         }
 
         .game-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 32px rgba(40, 205, 223, 0.15);
-            border-color: var(--accent);
+            transform: translateY(-6px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(40, 205, 223, 0.25), 0 0 0 1px var(--accent);
+            border-color: transparent;
+            background: linear-gradient(var(--card-bg), var(--card-bg)) padding-box, var(--accent-gradient) border-box;
+        }
+
+        .game-card:active {
+            transform: translateY(-2px) scale(0.98);
+            box-shadow: 0 8px 24px rgba(40, 205, 223, 0.2);
+            transition-duration: 0.15s;
         }
 
         .game-thumbnail {
