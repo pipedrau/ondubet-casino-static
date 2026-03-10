@@ -617,7 +617,47 @@
             width: 24px;
             border-radius: 4px;
         }
-        
+
+        /* Skeleton Loading */
+        .skeleton {
+            background: linear-gradient(90deg, var(--surface) 25%, var(--card-bg) 50%, var(--surface) 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+            border-radius: 12px;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        .skeleton-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .skeleton-thumbnail {
+            width: 100%;
+            aspect-ratio: 1;
+        }
+
+        .skeleton-info {
+            padding: 10px;
+        }
+
+        .skeleton-title {
+            height: 14px;
+            width: 70%;
+            margin-bottom: 6px;
+        }
+
+        .skeleton-provider {
+            height: 10px;
+            width: 50%;
+        }
+
         /* Touch/Swipe Support */
         .banner-slider {
             overflow: hidden;
@@ -766,6 +806,7 @@
             <span class="section-link">Ver más →</span>
         </div>
         <div class="games-grid" id="gamesGrid">
+            <!-- Skeleton Loading -->
         </div>
     </section>
 
@@ -777,6 +818,7 @@
             <span class="section-link">Ver más →</span>
         </div>
         <div class="games-grid" id="trendingGames">
+            <!-- Skeleton Loading -->
         </div>
     </section>
 
@@ -815,25 +857,49 @@
             { id: 10, title: 'Wolf Gold', provider: 'Pragmatic Play', badge: null, emoji: '🐺' },
         ];
 
+        // Render Skeleton Loading
+        function renderSkeleton(count = 10) {
+            let skeletonHTML = '';
+            for (let i = 0; i < count; i++) {
+                skeletonHTML += `
+                    <div class="skeleton-card">
+                        <div class="skeleton skeleton-thumbnail"></div>
+                        <div class="skeleton-info">
+                            <div class="skeleton skeleton-title"></div>
+                            <div class="skeleton skeleton-provider"></div>
+                        </div>
+                    </div>
+                `;
+            }
+            return skeletonHTML;
+        }
+
         function renderGames() {
             const grid = document.getElementById('gamesGrid');
             const trending = document.getElementById('trendingGames');
             
-            const html = games.map(game => `
-                <div class="game-card" onclick="alert('🎮 Iniciando ${game.title}...')">
-                    <div class="game-thumbnail">
-                        <span>${game.emoji}</span>
-                        ${game.badge ? `<span class="game-badge badge-${game.badge}">${game.badge === 'hot' ? 'HOT' : game.badge === 'new' ? 'NUEVO' : 'JACKPOT'}</span>` : ''}
+            // Show skeleton first
+            grid.innerHTML = renderSkeleton(10);
+            trending.innerHTML = renderSkeleton(10);
+            
+            // Simulate loading delay
+            setTimeout(() => {
+                const html = games.map(game => `
+                    <div class="game-card" onclick="alert('🎮 Iniciando ${game.title}...')">
+                        <div class="game-thumbnail">
+                            <span>${game.emoji}</span>
+                            ${game.badge ? `<span class="game-badge badge-${game.badge}">${game.badge === 'hot' ? 'HOT' : game.badge === 'new' ? 'NUEVO' : 'JACKPOT'}</span>` : ''}
+                        </div>
+                        <div class="game-info">
+                            <div class="game-title">${game.title}</div>
+                            <div class="game-provider">${game.provider}</div>
+                        </div>
                     </div>
-                    <div class="game-info">
-                        <div class="game-title">${game.title}</div>
-                        <div class="game-provider">${game.provider}</div>
-                    </div>
-                </div>
-            `).join('');
+                `).join('');
 
-            grid.innerHTML = html;
-            trending.innerHTML = html;
+                grid.innerHTML = html;
+                trending.innerHTML = html;
+            }, 800);
         }
 
         // State Management
