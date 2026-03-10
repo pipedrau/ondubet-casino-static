@@ -2483,6 +2483,45 @@
     </div>
 
     <script>
+        // ============================================
+        // MEJORA 11: Optimizar imágenes con Intersection Observer
+        // ============================================
+        
+        // Lazy Loading con Intersection Observer para mejor rendimiento
+        function initLazyLoading() {
+            const imageObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        const src = img.dataset.src;
+                        if (src) {
+                            img.src = src;
+                            img.onload = () => {
+                                img.classList.add('loaded');
+                                img.removeAttribute('data-src');
+                            };
+                            img.onerror = () => {
+                                img.style.display = 'none';
+                                const fallback = img.nextElementSibling;
+                                if (fallback) fallback.style.opacity = '1';
+                            };
+                            observer.unobserve(img);
+                        }
+                    }
+                });
+            }, {
+                rootMargin: '50px 0px',
+                threshold: 0.1
+            });
+
+            // Observar todas las imágenes con lazy loading
+            document.querySelectorAll('img[loading="lazy"]').forEach(img => {
+                if (!img.classList.contains('loaded')) {
+                    imageObserver.observe(img);
+                }
+            });
+        }
+
         // Sample Games Data con información extendida
         const games = [
             { id: 1, title: 'Sweet Bonanza', provider: 'Pragmatic Play', badge: 'hot', emoji: '🍬', rtp: '96.5%', volatility: 'Alta', lines: 20, description: 'Un explosivo juego de tragamonas con símbolos de dulces y frutas. ¡Dispara los globos para revelar multiplicadores de hasta 100x!', features: ['Free Spins', 'Multipliers', 'Cascading'], image: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400&h=400&fit=crop' },
@@ -2532,6 +2571,7 @@
             return skeletonHTML;
         }
 
+        // Actualizar template de juegos para usar data-src
         function renderGames() {
             const grid = document.getElementById('gamesGrid');
             const trending = document.getElementById('trendingGames');
@@ -2548,7 +2588,7 @@
                             ${favorites.includes(game.id) ? '❤️' : '🤍'}
                         </button>
                         <div class="game-thumbnail">
-                            <img src="${game.image}" alt="${game.title}" loading="lazy" onload="this.classList.add('loaded')" onerror="this.style.display='none'">
+                            <img data-src="${game.image}" alt="${game.title}" loading="lazy" onload="this.classList.add('loaded')" onerror="this.style.display='none'">
                             <span class="emoji-fallback">${game.emoji}</span>
                             ${game.badge ? `<span class="game-badge badge-${game.badge}">${game.badge === 'hot' ? 'HOT' : game.badge === 'new' ? 'NUEVO' : 'JACKPOT'}</span>` : ''}
                         </div>
@@ -2561,6 +2601,9 @@
 
                 grid.innerHTML = html;
                 trending.innerHTML = html;
+                
+                // Iniciar lazy loading después de renderizar
+                initLazyLoading();
             }, 800);
         }
 
