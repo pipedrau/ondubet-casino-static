@@ -580,6 +580,40 @@
             }
         }
 
+        .favorite-icon {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 32px;
+            height: 32px;
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+            z-index: 5;
+            border: none;
+        }
+
+        .favorite-icon:hover {
+            transform: scale(1.15);
+            background: rgba(0, 0, 0, 0.8);
+        }
+
+        .favorite-icon.active {
+            background: var(--error);
+            animation: heart-pop 0.3s ease;
+        }
+
+        @keyframes heart-pop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+            100% { transform: scale(1); }
+        }
+
         .game-card {
             background: var(--card-bg);
             border-radius: 12px;
@@ -1369,6 +1403,20 @@
         let favorites = JSON.parse(localStorage.getItem('casinoFavorites') || '[]');
         let currentGameId = null;
 
+        function toggleGameFavorite(event, gameId) {
+            event.stopPropagation();
+            
+            const index = favorites.indexOf(gameId);
+            if (index > -1) {
+                favorites.splice(index, 1);
+            } else {
+                favorites.push(gameId);
+            }
+
+            localStorage.setItem('casinoFavorites', JSON.stringify(favorites));
+            renderGames();
+        }
+
         // Render Skeleton Loading
         function renderSkeleton(count = 10) {
             let skeletonHTML = '';
@@ -1398,6 +1446,9 @@
             setTimeout(() => {
                 const html = games.map(game => `
                     <div class="game-card" onclick="openGameModal(${game.id})">
+                        <button class="favorite-icon ${favorites.includes(game.id) ? 'active' : ''}" onclick="toggleGameFavorite(event, ${game.id})">
+                            ${favorites.includes(game.id) ? '❤️' : '🤍'}
+                        </button>
                         <div class="game-thumbnail">
                             <span>${game.emoji}</span>
                             ${game.badge ? `<span class="game-badge badge-${game.badge}">${game.badge === 'hot' ? 'HOT' : game.badge === 'new' ? 'NUEVO' : 'JACKPOT'}</span>` : ''}
