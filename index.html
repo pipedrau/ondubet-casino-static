@@ -385,6 +385,44 @@
             opacity: 1;
         }
 
+        /* Filter Chips con estado activo mejorado */
+        .filter-chip {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .filter-chip::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: var(--accent-gradient);
+            opacity: 0;
+            transition: opacity 0.25s ease;
+            border-radius: 20px;
+        }
+
+        .filter-chip:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .filter-chip:hover::before {
+            opacity: 0.1;
+        }
+
+        .filter-chip.active {
+            border-color: var(--accent);
+            color: white;
+            background: var(--accent-gradient);
+            box-shadow: 0 4px 16px rgba(40, 205, 223, 0.35);
+            transform: translateY(-2px);
+        }
+
+        .filter-chip.active::before {
+            display: none;
+        }
+
         /* Filters */
         .filters {
             padding: var(--space-4);
@@ -1480,12 +1518,6 @@
             font-size: 13px;
             font-weight: 500;
             transition: all 0.2s;
-        }
-
-        .filter-chip:hover, .filter-chip.active {
-            border-color: var(--accent);
-            color: var(--accent);
-            background: rgba(40, 205, 223, 0.1);
         }
 
         /* Search */
