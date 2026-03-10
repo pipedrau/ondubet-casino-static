@@ -443,6 +443,97 @@
             border-color: var(--accent);
         }
 
+        /* Search en tiempo real */
+        .search-container {
+            position: relative;
+        }
+
+        .search-results {
+            position: absolute;
+            top: calc(100% + 8px);
+            left: 0;
+            right: 0;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            max-height: 320px;
+            overflow-y: auto;
+            z-index: 50;
+            display: none;
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        .search-results.active {
+            display: block;
+            animation: slideDown 0.2s ease;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .search-result-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 14px;
+            cursor: pointer;
+            transition: background 0.15s;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .search-result-item:last-child {
+            border-bottom: none;
+        }
+
+        .search-result-item:hover {
+            background: var(--surface);
+        }
+
+        .search-result-emoji {
+            font-size: 28px;
+            width: 44px;
+            height: 44px;
+            background: var(--surface);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .search-result-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .search-result-title {
+            font-size: 14px;
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .search-result-provider {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .search-no-results {
+            padding: 20px;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+
+        .search-highlight {
+            background: rgba(40, 205, 223, 0.3);
+            color: var(--accent);
+            padding: 0 2px;
+            border-radius: 2px;
+        }
+
         /* Games Grid */
         .games-section {
             padding: 0 16px 24px;
@@ -1142,9 +1233,14 @@
         </div>
     </div>
 
-    <!-- Search -->
+    <!-- Search con resultados en tiempo real -->
     <div class="search-bar">
-        <input type="text" class="search-input" placeholder="🔍 Buscar juegos...">
+        <div class="search-container">
+            <input type="text" class="search-input" id="searchInput" placeholder="🔍 Buscar juegos..." autocomplete="off">
+            <div class="search-results" id="searchResults">
+                <!-- Resultados en tiempo real -->
+            </div>
+        </div>
     </div>
 
     <!-- Filters -->
@@ -1537,6 +1633,73 @@
                     goToSlide(currentSlide - 1);
                 }
             }
+        }
+
+        // Search en tiempo real
+        const searchInput = document.getElementById('searchInput');
+        const searchResults = document.getElementById('searchResults');
+        let searchDebounce = null;
+
+        searchInput.addEventListener('input', function(e) {
+            const query = e.target.value.toLowerCase().trim();
+            
+            clearTimeout(searchDebounce);
+            
+            if (query.length < 1) {
+                searchResults.classList.remove('active');
+                searchResults.innerHTML = '';
+                return;
+            }
+
+            searchDebounce = setTimeout(() => {
+                performSearch(query);
+            }, 200);
+        });
+
+        searchInput.addEventListener('focus', function() {
+            if (searchInput.value.trim().length > 0) {
+                searchResults.classList.add('active');
+            }
+        });
+
+        // Cerrar búsqueda al hacer click fuera
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.search-container')) {
+                searchResults.classList.remove('active');
+            }
+        });
+
+        function performSearch(query) {
+            const results = games.filter(game => 
+                game.title.toLowerCase().includes(query) || 
+                game.provider.toLowerCase().includes(query)
+            ).slice(0, 6); // Max 6 resultados
+
+            if (results.length === 0) {
+                searchResults.innerHTML = `
+                    <div class="search-no-results">
+                        <span>🔍</span><br>
+                        No se encontraron juegos para "${searchInput.value}"
+                    </div>
+                `;
+            } else {
+                searchResults.innerHTML = results.map(game => `
+                    <div class="search-result-item" onclick="openGameModal(${game.id}); searchResults.classList.remove('active'); searchInput.value = '';">
+                        <div class="search-result-emoji">${game.emoji}</div>
+                        <div class="search-result-info">
+                            <div class="search-result-title">${highlightMatch(game.title, query)}</div>
+                            <div class="search-result-provider">${highlightMatch(game.provider, query)}</div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            searchResults.classList.add('active');
+        }
+
+        function highlightMatch(text, query) {
+            const regex = new RegExp(`(${query})`, 'gi');
+            return text.replace(regex, '<span class="search-highlight">$1</span>');
         }
     </script>
 </body>
