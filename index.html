@@ -663,6 +663,37 @@
             justify-content: center;
             position: relative;
             font-size: 36px;
+            overflow: hidden;
+        }
+
+        .game-thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            transition: opacity 0.4s ease, transform 0.3s ease;
+        }
+
+        .game-thumbnail img.loaded {
+            opacity: 1;
+        }
+
+        .game-thumbnail img:hover {
+            transform: scale(1.05);
+        }
+
+        .game-thumbnail .emoji-fallback {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            transition: opacity 0.3s ease;
+        }
+
+        .game-thumbnail img.loaded + .emoji-fallback {
+            opacity: 0;
         }
 
         .game-badge {
@@ -1387,16 +1418,16 @@
     <script>
         // Sample Games Data con información extendida
         const games = [
-            { id: 1, title: 'Sweet Bonanza', provider: 'Pragmatic Play', badge: 'hot', emoji: '🍬', rtp: '96.5%', volatility: 'Alta', lines: 20, description: 'Un explosivo juego de tragamonas con símbolos de dulces y frutas. ¡Dispara los globos para revelar multiplicadores de hasta 100x!', features: ['Free Spins', 'Multipliers', 'Cascading'] },
-            { id: 2, title: 'Gates of Olympus', provider: 'Pragmatic Play', badge: 'hot', emoji: '⚡', rtp: '96.5%', volatility: 'Alta', lines: '6x5', description: 'El Dios del trueno te espera con multiplicadores divinos. Gana hasta 5000x tu apuesta en este épico juego de Zeus.', features: ['Free Spins', 'Tumble', 'Multipliers'] },
-            { id: 3, title: 'Lightning Roulette', provider: 'Evolution', badge: 'new', emoji: '⚡', rtp: '97.3%', volatility: 'Media', lines: 'N/A', description: 'Ruleta en vivo con rayos que multiplican tus ganancias. Una experiencia única de casino auténtico.', features: ['Live', 'Lightning Numbers', ' multipliers'] },
-            { id: 4, title: 'Aviator', provider: 'Spribe', badge: 'jackpot', emoji: '✈️', rtp: '97.0%', volatility: 'Alta', lines: 'N/A', description: 'El avión despega y multiplica tu apuesta. ¡Cash out antes de que despegue! Ganancias de hasta 10,000x.', features: ['Crash', 'Auto Cashout', 'Multiplayer'] },
-            { id: 5, title: 'Crazy Time', provider: 'Evolution', badge: 'jackpot', emoji: '🎡', rtp: '96.0%', volatility: 'Alta', lines: 'N/A', description: 'El juego de casino más divertido jamás creado. 4 bonos emocionales: Cash Hunt, Pachinko, Coin Flip y Crazy Time.', features: ['Live', 'Bonus Games', 'Multipliers'] },
-            { id: 6, title: 'Blackjack VIP', provider: 'Evolution', badge: null, emoji: '🃏', rtp: '99.5%', volatility: 'Baja', lines: 'N/A', description: 'Blackjack premium con límites altos. Juega contra dealers profesionales en mesas VIP exclusivas.', features: ['Live', 'VIP', 'Side Bets'] },
-            { id: 7, title: 'Mine', provider: 'Spribe', badge: 'new', emoji: '💣', rtp: '97.0%', volatility: 'Alta', lines: 'N/A', description: 'Recoge ganancias antes de que estallen las minas. ¡Elige sabiamente cuántos diamantes recolectar!', features: ['Crash', 'Custom Risk', 'Auto Play'] },
-            { id: 8, title: 'Starburst', provider: 'NetEnt', badge: null, emoji: '⭐', rtp: '96.1%', volatility: 'Baja', lines: 10, description: 'El clásico de los casinos. Estrellas salvajes que se expanden y ofrecen re-giros gratis.', features: ['Wilds', 'Re-Spins', 'Both Ways'] },
-            { id: 9, title: 'Book of Dead', provider: "Play'n GO", badge: null, emoji: '📖', rtp: '96.2%', volatility: 'Alta', lines: 10, description: 'Únete a Rich Wilde en una aventura egipcia. El libro es wild y scatter que activa los free spins.', features: ['Free Spins', 'Expanding Symbol', 'Gamble'] },
-            { id: 10, title: 'Wolf Gold', provider: 'Pragmatic Play', badge: null, emoji: '🐺', rtp: '96.0%', volatility: 'Media', lines: 25, description: 'Lobos, águilas y búfalos te esperan en las praderas. Incluye jackpots progresivos y free spins.', features: ['Jackpot', 'Free Spins', 'Respins'] },
+            { id: 1, title: 'Sweet Bonanza', provider: 'Pragmatic Play', badge: 'hot', emoji: '🍬', rtp: '96.5%', volatility: 'Alta', lines: 20, description: 'Un explosivo juego de tragamonas con símbolos de dulces y frutas. ¡Dispara los globos para revelar multiplicadores de hasta 100x!', features: ['Free Spins', 'Multipliers', 'Cascading'], image: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400&h=400&fit=crop' },
+            { id: 2, title: 'Gates of Olympus', provider: 'Pragmatic Play', badge: 'hot', emoji: '⚡', rtp: '96.5%', volatility: 'Alta', lines: '6x5', description: 'El Dios del trueno te espera con multiplicadores divinos. Gana hasta 5000x tu apuesta en este épico juego de Zeus.', features: ['Free Spins', 'Tumble', 'Multipliers'], image: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=400&h=400&fit=crop' },
+            { id: 3, title: 'Lightning Roulette', provider: 'Evolution', badge: 'new', emoji: '⚡', rtp: '97.3%', volatility: 'Media', lines: 'N/A', description: 'Ruleta en vivo con rayos que multiplican tus ganancias. Una experiencia única de casino auténtico.', features: ['Live', 'Lightning Numbers', ' multipliers'], image: 'https://images.unsplash.com/photo-1603569283847-aa295f0d016a?w=400&h=400&fit=crop' },
+            { id: 4, title: 'Aviator', provider: 'Spribe', badge: 'jackpot', emoji: '✈️', rtp: '97.0%', volatility: 'Alta', lines: 'N/A', description: 'El avión despega y multiplica tu apuesta. ¡Cash out antes de que despegue! Ganancias de hasta 10,000x.', features: ['Crash', 'Auto Cashout', 'Multiplayer'], image: 'https://images.unsplash.com/photo-1436076863939-06870fe779c2?w=400&h=400&fit=crop' },
+            { id: 5, title: 'Crazy Time', provider: 'Evolution', badge: 'jackpot', emoji: '🎡', rtp: '96.0%', volatility: 'Alta', lines: 'N/A', description: 'El juego de casino más divertido jamás creado. 4 bonos emocionales: Cash Hunt, Pachinko, Coin Flip y Crazy Time.', features: ['Live', 'Bonus Games', 'Multipliers'], image: 'https://images.unsplash.com/photo-1527023697228-6c22310ee8e8?w=400&h=400&fit=crop' },
+            { id: 6, title: 'Blackjack VIP', provider: 'Evolution', badge: null, emoji: '🃏', rtp: '99.5%', volatility: 'Baja', lines: 'N/A', description: 'Blackjack premium con límites altos. Juega contra dealers profesionales en mesas VIP exclusivas.', features: ['Live', 'VIP', 'Side Bets'], image: 'https://images.unsplash.com/photo-1508672019048-805c876b67e2?w=400&h=400&fit=crop' },
+            { id: 7, title: 'Mine', provider: 'Spribe', badge: 'new', emoji: '💣', rtp: '97.0%', volatility: 'Alta', lines: 'N/A', description: 'Recoge ganancias antes de que estallen las minas. ¡Elige sabiamente cuántos diamantes recolectar!', features: ['Crash', 'Custom Risk', 'Auto Play'], image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=400&fit=crop' },
+            { id: 8, title: 'Starburst', provider: 'NetEnt', badge: null, emoji: '⭐', rtp: '96.1%', volatilidad: 'Baja', lines: 10, description: 'El clásico de los casinos. Estrellas salvajes que se expanden y ofrecen re-giros gratis.', features: ['Wilds', 'Re-Spins', 'Both Ways'], image: 'https://images.unsplash.com/photo-1579372786545-d24232daf58c?w=400&h=400&fit=crop' },
+            { id: 9, title: 'Book of Dead', provider: "Play'n GO", badge: null, emoji: '📖', rtp: '96.2%', volatility: 'Alta', lines: 10, description: 'Únete a Rich Wilde en una aventura egipcia. El libro es wild y scatter que activa los free spins.', features: ['Free Spins', 'Expanding Symbol', 'Gamble'], image: 'https://images.unsplash.com/photo-1533253767294-bc3ba2dbc6a5?w=400&h=400&fit=crop' },
+            { id: 10, title: 'Wolf Gold', provider: 'Pragmatic Play', badge: null, emoji: '🐺', rtp: '96.0%', volatility: 'Media', lines: 25, description: 'Lobos, águilas y búfalos te esperan en las praderas. Incluye jackpots progresivos y free spins.', features: ['Jackpot', 'Free Spins', 'Respins'], image: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400&h=400&fit=crop' },
         ];
 
         // Estado de favoritos
@@ -1450,7 +1481,8 @@
                             ${favorites.includes(game.id) ? '❤️' : '🤍'}
                         </button>
                         <div class="game-thumbnail">
-                            <span>${game.emoji}</span>
+                            <img src="${game.image}" alt="${game.title}" loading="lazy" onload="this.classList.add('loaded')" onerror="this.style.display='none'">
+                            <span class="emoji-fallback">${game.emoji}</span>
                             ${game.badge ? `<span class="game-badge badge-${game.badge}">${game.badge === 'hot' ? 'HOT' : game.badge === 'new' ? 'NUEVO' : 'JACKPOT'}</span>` : ''}
                         </div>
                         <div class="game-info">
