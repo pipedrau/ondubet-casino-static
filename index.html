@@ -239,6 +239,24 @@
             box-shadow: 0 8px 24px rgba(40, 205, 223, 0.3);
         }
 
+        /* Efecto Pulse en botón CTA */
+        @keyframes pulse-glow {
+            0%, 100% {
+                box-shadow: 0 0 0 0 rgba(40, 205, 223, 0.4);
+            }
+            50% {
+                box-shadow: 0 0 20px 8px rgba(40, 205, 223, 0.2);
+            }
+        }
+
+        .hero-btn {
+            animation: pulse-glow 2s ease-in-out infinite;
+        }
+
+        .hero-btn:hover {
+            animation: none;
+        }
+
         /* Tournament Badge */
         .tournament-badge {
             position: absolute;
