@@ -701,6 +701,212 @@
             user-select: none;
             touch-action: pan-y pinch-zoom;
         }
+
+        /* Modal de Detalle de Juego */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .game-modal {
+            background: var(--card-bg);
+            border-radius: 20px;
+            width: 100%;
+            max-width: 400px;
+            max-height: 90vh;
+            overflow-y: auto;
+            transform: scale(0.9) translateY(20px);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid var(--border);
+        }
+
+        .modal-overlay.active .game-modal {
+            transform: scale(1) translateY(0);
+        }
+
+        .modal-header {
+            position: relative;
+        }
+
+        .modal-thumbnail {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: linear-gradient(135deg, var(--surface) 0%, var(--primary) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 64px;
+            border-radius: 20px 20px 0 0;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.6);
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .modal-close:hover {
+            background: var(--error);
+            transform: scale(1.1);
+        }
+
+        .modal-badge {
+            position: absolute;
+            bottom: 12px;
+            left: 12px;
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .modal-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .modal-provider {
+            color: var(--text-muted);
+            font-size: 14px;
+            margin-bottom: 16px;
+        }
+
+        .modal-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .stat-item {
+            background: var(--surface);
+            padding: 12px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .modal-description {
+            color: var(--text-muted);
+            font-size: 13px;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        .modal-features {
+            margin-bottom: 20px;
+        }
+
+        .modal-features h4 {
+            font-size: 14px;
+            margin-bottom: 10px;
+            color: var(--text);
+        }
+
+        .feature-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .feature-tag {
+            background: rgba(40, 205, 223, 0.1);
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn-play {
+            flex: 1;
+            background: var(--accent-gradient);
+            border: none;
+            padding: 14px 24px;
+            border-radius: 24px;
+            color: white;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-play:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(40, 205, 223, 0.3);
+        }
+
+        .btn-favorite {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-favorite:hover {
+            border-color: var(--error);
+            color: var(--error);
+        }
+
+        .btn-favorite.active {
+            background: var(--error);
+            border-color: var(--error);
+            color: white;
+        }
     </style>
 </head>
 <body>
@@ -878,20 +1084,76 @@
         </div>
     </nav>
 
+    <!-- Modal de Detalle de Juego -->
+    <div class="modal-overlay" id="gameModal" onclick="closeModalOutside(event)">
+        <div class="game-modal">
+            <div class="modal-header">
+                <div class="modal-thumbnail" id="modalThumbnail">🎰</div>
+                <button class="modal-close" onclick="closeModal()">✕</button>
+                <span class="game-badge modal-badge badge-hot" id="modalBadge" style="display: none;">HOT</span>
+            </div>
+            <div class="modal-body">
+                <h2 class="modal-title" id="modalTitle">Sweet Bonanza</h2>
+                <p class="modal-provider" id="modalProvider">Pragmatic Play</p>
+                
+                <div class="modal-stats">
+                    <div class="stat-item">
+                        <div class="stat-value" id="modalRTP">96.5%</div>
+                        <div class="stat-label">RTP</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="modalVolatility">Alta</div>
+                        <div class="stat-label">Volatilidad</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="modalLines">20</div>
+                        <div class="stat-label">Líneas</div>
+                    </div>
+                </div>
+
+                <p class="modal-description" id="modalDescription">
+                    Un explosivo juego de tragamonas con símbolos de dulces y frutas. ¡Dispara los globos para revelar multiplicadores de hasta 100x!
+                </p>
+
+                <div class="modal-features">
+                    <h4>🎮 Características</h4>
+                    <div class="feature-tags" id="modalFeatures">
+                        <span class="feature-tag">Free Spins</span>
+                        <span class="feature-tag">Multipliers</span>
+                        <span class="feature-tag">Cascading</span>
+                    </div>
+                </div>
+
+                <div class="modal-actions">
+                    <button class="btn-favorite" id="modalFavoriteBtn" onclick="toggleFavorite()">
+                        🤍
+                    </button>
+                    <button class="btn-play" onclick="playGame()">
+                        🎮 JUGAR AHORA
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // Sample Games Data
+        // Sample Games Data con información extendida
         const games = [
-            { id: 1, title: 'Sweet Bonanza', provider: 'Pragmatic Play', badge: 'hot', emoji: '🍬' },
-            { id: 2, title: 'Gates of Olympus', provider: 'Pragmatic Play', badge: 'hot', emoji: '⚡' },
-            { id: 3, title: 'Lightning Roulette', provider: 'Evolution', badge: 'new', emoji: '⚡' },
-            { id: 4, title: 'Aviator', provider: 'Spribe', badge: 'jackpot', emoji: '✈️' },
-            { id: 5, title: 'Crazy Time', provider: 'Evolution', badge: 'jackpot', emoji: '🎡' },
-            { id: 6, title: 'Blackjack VIP', provider: 'Evolution', badge: null, emoji: '🃏' },
-            { id: 7, title: 'Mine', provider: 'Spribe', badge: 'new', emoji: '💣' },
-            { id: 8, title: 'Starburst', provider: 'NetEnt', badge: null, emoji: '⭐' },
-            { id: 9, title: 'Book of Dead', provider: "Play'n GO", badge: null, emoji: '📖' },
-            { id: 10, title: 'Wolf Gold', provider: 'Pragmatic Play', badge: null, emoji: '🐺' },
+            { id: 1, title: 'Sweet Bonanza', provider: 'Pragmatic Play', badge: 'hot', emoji: '🍬', rtp: '96.5%', volatility: 'Alta', lines: 20, description: 'Un explosivo juego de tragamonas con símbolos de dulces y frutas. ¡Dispara los globos para revelar multiplicadores de hasta 100x!', features: ['Free Spins', 'Multipliers', 'Cascading'] },
+            { id: 2, title: 'Gates of Olympus', provider: 'Pragmatic Play', badge: 'hot', emoji: '⚡', rtp: '96.5%', volatility: 'Alta', lines: '6x5', description: 'El Dios del trueno te espera con multiplicadores divinos. Gana hasta 5000x tu apuesta en este épico juego de Zeus.', features: ['Free Spins', 'Tumble', 'Multipliers'] },
+            { id: 3, title: 'Lightning Roulette', provider: 'Evolution', badge: 'new', emoji: '⚡', rtp: '97.3%', volatility: 'Media', lines: 'N/A', description: 'Ruleta en vivo con rayos que multiplican tus ganancias. Una experiencia única de casino auténtico.', features: ['Live', 'Lightning Numbers', ' multipliers'] },
+            { id: 4, title: 'Aviator', provider: 'Spribe', badge: 'jackpot', emoji: '✈️', rtp: '97.0%', volatility: 'Alta', lines: 'N/A', description: 'El avión despega y multiplica tu apuesta. ¡Cash out antes de que despegue! Ganancias de hasta 10,000x.', features: ['Crash', 'Auto Cashout', 'Multiplayer'] },
+            { id: 5, title: 'Crazy Time', provider: 'Evolution', badge: 'jackpot', emoji: '🎡', rtp: '96.0%', volatility: 'Alta', lines: 'N/A', description: 'El juego de casino más divertido jamás creado. 4 bonos emocionales: Cash Hunt, Pachinko, Coin Flip y Crazy Time.', features: ['Live', 'Bonus Games', 'Multipliers'] },
+            { id: 6, title: 'Blackjack VIP', provider: 'Evolution', badge: null, emoji: '🃏', rtp: '99.5%', volatility: 'Baja', lines: 'N/A', description: 'Blackjack premium con límites altos. Juega contra dealers profesionales en mesas VIP exclusivas.', features: ['Live', 'VIP', 'Side Bets'] },
+            { id: 7, title: 'Mine', provider: 'Spribe', badge: 'new', emoji: '💣', rtp: '97.0%', volatility: 'Alta', lines: 'N/A', description: 'Recoge ganancias antes de que estallen las minas. ¡Elige sabiamente cuántos diamantes recolectar!', features: ['Crash', 'Custom Risk', 'Auto Play'] },
+            { id: 8, title: 'Starburst', provider: 'NetEnt', badge: null, emoji: '⭐', rtp: '96.1%', volatility: 'Baja', lines: 10, description: 'El clásico de los casinos. Estrellas salvajes que se expanden y ofrecen re-giros gratis.', features: ['Wilds', 'Re-Spins', 'Both Ways'] },
+            { id: 9, title: 'Book of Dead', provider: "Play'n GO", badge: null, emoji: '📖', rtp: '96.2%', volatility: 'Alta', lines: 10, description: 'Únete a Rich Wilde en una aventura egipcia. El libro es wild y scatter que activa los free spins.', features: ['Free Spins', 'Expanding Symbol', 'Gamble'] },
+            { id: 10, title: 'Wolf Gold', provider: 'Pragmatic Play', badge: null, emoji: '🐺', rtp: '96.0%', volatility: 'Media', lines: 25, description: 'Lobos, águilas y búfalos te esperan en las praderas. Incluye jackpots progresivos y free spins.', features: ['Jackpot', 'Free Spins', 'Respins'] },
         ];
+
+        // Estado de favoritos
+        let favorites = JSON.parse(localStorage.getItem('casinoFavorites') || '[]');
+        let currentGameId = null;
 
         // Render Skeleton Loading
         function renderSkeleton(count = 10) {
@@ -921,7 +1183,7 @@
             // Simulate loading delay
             setTimeout(() => {
                 const html = games.map(game => `
-                    <div class="game-card" onclick="alert('🎮 Iniciando ${game.title}...')">
+                    <div class="game-card" onclick="openGameModal(${game.id})">
                         <div class="game-thumbnail">
                             <span>${game.emoji}</span>
                             ${game.badge ? `<span class="game-badge badge-${game.badge}">${game.badge === 'hot' ? 'HOT' : game.badge === 'new' ? 'NUEVO' : 'JACKPOT'}</span>` : ''}
@@ -937,6 +1199,96 @@
                 trending.innerHTML = html;
             }, 800);
         }
+
+        // Modal Functions
+        function openGameModal(gameId) {
+            const game = games.find(g => g.id === gameId);
+            if (!game) return;
+
+            currentGameId = gameId;
+
+            document.getElementById('modalThumbnail').textContent = game.emoji;
+            document.getElementById('modalTitle').textContent = game.title;
+            document.getElementById('modalProvider').textContent = game.provider;
+            document.getElementById('modalRTP').textContent = game.rtp;
+            document.getElementById('modalVolatility').textContent = game.volatility;
+            document.getElementById('modalLines').textContent = game.lines;
+            document.getElementById('modalDescription').textContent = game.description;
+
+            const badge = document.getElementById('modalBadge');
+            if (game.badge) {
+                badge.style.display = 'block';
+                badge.className = `game-badge badge-${game.badge} modal-badge`;
+                badge.textContent = game.badge === 'hot' ? 'HOT' : game.badge === 'new' ? 'NUEVO' : 'JACKPOT';
+            } else {
+                badge.style.display = 'none';
+            }
+
+            const featuresContainer = document.getElementById('modalFeatures');
+            featuresContainer.innerHTML = game.features.map(f => `<span class="feature-tag">${f}</span>`).join('');
+
+            const favBtn = document.getElementById('modalFavoriteBtn');
+            if (favorites.includes(gameId)) {
+                favBtn.classList.add('active');
+                favBtn.textContent = '❤️';
+            } else {
+                favBtn.classList.remove('active');
+                favBtn.textContent = '🤍';
+            }
+
+            document.getElementById('gameModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('gameModal').classList.remove('active');
+            document.body.style.overflow = '';
+            currentGameId = null;
+        }
+
+        function closeModalOutside(event) {
+            if (event.target.id === 'gameModal') {
+                closeModal();
+            }
+        }
+
+        function toggleFavorite() {
+            if (!currentGameId) return;
+
+            const index = favorites.indexOf(currentGameId);
+            if (index > -1) {
+                favorites.splice(index, 1);
+            } else {
+                favorites.push(currentGameId);
+            }
+
+            localStorage.setItem('casinoFavorites', JSON.stringify(favorites));
+
+            const favBtn = document.getElementById('modalFavoriteBtn');
+            if (favorites.includes(currentGameId)) {
+                favBtn.classList.add('active');
+                favBtn.textContent = '❤️';
+            } else {
+                favBtn.classList.remove('active');
+                favBtn.textContent = '🤍';
+            }
+
+            // Actualizar visualización de favoritos en las cards
+            renderGames();
+        }
+
+        function playGame() {
+            const game = games.find(g => g.id === currentGameId);
+            if (game) {
+                alert(`🎮 Iniciando ${game.title}...\n\n¡Buena suerte! 🍀`);
+                closeModal();
+            }
+        }
+
+        // Cerrar modal con ESC
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
+        });
 
         // State Management
         const states = {
