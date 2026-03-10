@@ -545,16 +545,16 @@
             inset: 0;
             opacity: 0;
             transition: opacity 0.5s ease;
-            background: linear-gradient(135deg, rgba(21, 28, 48, 0.92) 0%, rgba(13, 18, 32, 0.95) 100%);
         }
         
         .hero-banner.active {
-            opacity: 1;
+            background: linear-gradient(135deg, rgba(21, 28, 48, 0.9) 0%, rgba(13, 18, 32, 0.95) 100%),
+                        url('banner_casino_caribeno.png') center/cover no-repeat;
         }
         
         .hero-banner.slide-2 {
             background: linear-gradient(135deg, rgba(138, 43, 226, 0.15) 0%, rgba(13, 18, 32, 0.95) 100%),
-                        url('https://secrzaapg5nnoosz.public.blob.vercel-storage.com/hondubet/cms/carousel/bono-primer-depsito-300-1764363677579.webp') center/cover no-repeat;
+                        url('banner_slots_mega.png') center/cover no-repeat;
         }
         
         /* Mundial Slide with Image */
@@ -571,8 +571,8 @@
         }
         
         .hero-banner.slide-3 {
-            background: linear-gradient(135deg, rgba(255, 171, 0, 0.1) 0%, rgba(13, 18, 32, 0.95) 100%),
-                        url('https://secrzaapg5nnoosz.public.blob.vercel-storage.com/hondubet/cms/carousel/jackpot-hondubet-1772818602900.webp') center/cover no-repeat;
+            background: linear-gradient(135deg, rgba(255, 171, 0, 0.15) 0%, rgba(13, 18, 32, 0.95) 100%),
+                        url('banner_vip_club.png') center/cover no-repeat;
         }
         
         .banner-dots {
@@ -596,6 +596,14 @@
             background: var(--accent);
             width: 24px;
             border-radius: 4px;
+        }
+        
+        /* Touch/Swipe Support */
+        .banner-slider {
+            overflow: hidden;
+            -webkit-user-select: none;
+            user-select: none;
+            touch-action: pan-y pinch-zoom;
         }
     </style>
 </head>
@@ -878,6 +886,35 @@
         }
         
         setInterval(() => goToSlide(currentSlide + 1), 5000);
+        
+        // Touch/Swipe Support
+        const slider = document.getElementById('bannerSlider');
+        let touchStartX = 0;
+        let touchEndX = 0;
+        
+        slider.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+        
+        slider.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        }, { passive: true });
+        
+        function handleSwipe() {
+            const swipeThreshold = 50;
+            const diff = touchStartX - touchEndX;
+            
+            if (Math.abs(diff) > swipeThreshold) {
+                if (diff > 0) {
+                    // Swipe left - next slide
+                    goToSlide(currentSlide + 1);
+                } else {
+                    // Swipe right - previous slide
+                    goToSlide(currentSlide - 1);
+                }
+            }
+        }
     </script>
 </body>
 </html>
