@@ -281,6 +281,84 @@
             color: var(--success);
         }
 
+        /* Progress Bar Animada para Torneos */
+        .tournament-progress {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .progress-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            min-width: 100px;
+        }
+
+        .progress-label {
+            font-size: 10px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .progress-value {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .progress-bar-container {
+            flex: 1;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: var(--accent-gradient);
+            border-radius: 3px;
+            width: 0%;
+            transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .progress-bar-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.4) 50%, transparent 100%);
+            animation: progress-shine 2s ease-in-out infinite;
+        }
+
+        @keyframes progress-shine {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .progress-prize {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--warning);
+            white-space: nowrap;
+        }
+
+        .progress-days {
+            font-size: 10px;
+            color: var(--text-gray);
+        }
+
         /* Providers Bar */
         .providers-section {
             padding: 16px;
@@ -937,6 +1015,19 @@
                 <span>🏆</span>
                 <span class="tournament-prize">L 50,000</span>
             </div>
+            <!-- Progress Bar Tournament -->
+            <div class="tournament-progress">
+                <div class="progress-info">
+                    <span class="progress-label">Premio total</span>
+                    <span class="progress-value">L 50,000</span>
+                </div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar-fill" id="tournamentProgress" data-progress="68"></div>
+                </div>
+                <div class="progress-prize">
+                    <span id="currentPrize">L 34,000</span>
+                </div>
+            </div>
             <div class="hero-content">
                 <div class="hero-tag">
                     <span>🔥</span> Torneo Activo
@@ -1345,6 +1436,37 @@
 
         // Initialize
         renderGames();
+        
+        // Animar Progress Bar del Tournament
+        function animateTournamentProgress() {
+            const progressBar = document.getElementById('tournamentProgress');
+            const currentPrizeEl = document.getElementById('currentPrize');
+            
+            if (progressBar) {
+                const targetProgress = parseInt(progressBar.dataset.progress) || 68;
+                const totalPrize = 50000;
+                const currentPrize = Math.round(totalPrize * (targetProgress / 100));
+                
+                // Animar la barra
+                setTimeout(() => {
+                    progressBar.style.width = targetProgress + '%';
+                }, 500);
+                
+                // Animar el valor del premio actual
+                let current = 0;
+                const interval = setInterval(() => {
+                    current += Math.ceil(currentPrize / 30);
+                    if (current >= currentPrize) {
+                        current = currentPrize;
+                        clearInterval(interval);
+                    }
+                    currentPrizeEl.textContent = 'L ' + current.toLocaleString();
+                }, 50);
+            }
+        }
+        
+        // Ejecutar animación al cargar
+        animateTournamentProgress();
         
         // Banner Slider
         let currentSlide = 0;
