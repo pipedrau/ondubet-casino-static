@@ -545,33 +545,28 @@
             inset: 0;
             opacity: 0;
             transition: opacity 0.5s ease;
+            background: linear-gradient(135deg, rgba(21, 28, 48, 0.9) 0%, rgba(13, 18, 32, 0.95) 100%);
         }
         
-        .hero-banner.active {
-            background: linear-gradient(135deg, rgba(21, 28, 48, 0.9) 0%, rgba(13, 18, 32, 0.95) 100%),
+        .hero-banner.active,
+        .hero-banner[style*="banner_casino"] {
+            background: linear-gradient(135deg, rgba(21, 28, 48, 0.85) 0%, rgba(13, 18, 32, 0.9) 100%),
                         url('banner_casino_caribeno.webp') center/cover no-repeat;
         }
         
         .hero-banner.slide-2 {
-            background: linear-gradient(135deg, rgba(138, 43, 226, 0.15) 0%, rgba(13, 18, 32, 0.95) 100%),
+            background: linear-gradient(135deg, rgba(138, 43, 226, 0.2) 0%, rgba(13, 18, 32, 0.9) 100%),
                         url('banner_slots_mega.webp') center/cover no-repeat;
         }
         
-        /* Mundial Slide with Image */
-        .mundial-slide {
+        .hero-banner.mundial-slide,
+        .hero-banner[style*="mundial"] {
             background: linear-gradient(135deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.5) 50%, rgba(0, 0, 0, 0.8) 100%),
-                        url('mundial_2026_banner.webp') center/cover no-repeat !important;
-        }
-        
-        @media (min-width: 768px) {
-            .mundial-slide {
-                background: linear-gradient(135deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.3) 100%),
-                            url('mundial_2026_banner.webp') center/cover no-repeat !important;
-            }
+                        url('mundial_2026_banner.webp') center/cover no-repeat;
         }
         
         .hero-banner.slide-3 {
-            background: linear-gradient(135deg, rgba(255, 171, 0, 0.15) 0%, rgba(13, 18, 32, 0.95) 100%),
+            background: linear-gradient(135deg, rgba(255, 171, 0, 0.2) 0%, rgba(13, 18, 32, 0.9) 100%),
                         url('banner_vip_club.webp') center/cover no-repeat;
         }
         
